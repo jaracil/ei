@@ -221,102 +221,6 @@ func (i Ei) Float64() (float64, error) {
 	return 0, NewEiErr("type conversion error")
 }
 
-// Float32Z converts Ei to float32, returns zero value on error.
-func (i Ei) Float32Z() float32 {
-	r, _ := i.Float32()
-	return r
-}
-
-// Float32 converts Ei to float32.
-func (i Ei) Float32() (float32, error) {
-	switch v := i.v.(type) {
-	case error:
-		return 0, v
-	case uint8:
-		return float32(v), nil
-	case uint16:
-		return float32(v), nil
-	case uint:
-		return float32(v), nil
-	case uint32:
-		return float32(v), nil
-	case uint64:
-		return float32(v), nil
-	case int8:
-		return float32(v), nil
-	case int16:
-		return float32(v), nil
-	case int:
-		return float32(v), nil
-	case int32:
-		return float32(v), nil
-	case int64:
-		return float32(v), nil
-	case float32:
-		return float32(v), nil
-	case float64:
-		return float32(v), nil
-	case bool:
-		if v {
-			return 1, nil
-		}
-		return 0, nil
-	case string:
-		if n, err := strconv.ParseFloat(v, 64); err == nil {
-			return float32(n), nil
-		}
-	case time.Time:
-		return float32(v.Unix()), nil
-
-	}
-	return 0, NewEiErr("type conversion error")
-}
-
-// BoolZ converts Ei to bool, returns false on error.
-func (i Ei) BoolZ() bool {
-	r, _ := i.Bool()
-	return r
-}
-
-// Bool converts Ei to bool.
-func (i Ei) Bool() (bool, error) {
-	switch v := i.v.(type) {
-	case error:
-		return false, v
-	case uint8:
-		return v != 0, nil
-	case uint16:
-		return v != 0, nil
-	case uint:
-		return v != 0, nil
-	case uint32:
-		return v != 0, nil
-	case uint64:
-		return v != 0, nil
-	case int8:
-		return v != 0, nil
-	case int16:
-		return v != 0, nil
-	case int:
-		return v != 0, nil
-	case int32:
-		return v != 0, nil
-	case int64:
-		return v != 0, nil
-	case float32:
-		return v != 0, nil
-	case float64:
-		return v != 0, nil
-	case bool:
-		return v, nil
-	case string:
-		if n, err := strconv.ParseBool(v); err == nil {
-			return n, nil
-		}
-	}
-	return false, NewEiErr("type conversion error")
-}
-
 // StringZ converts Ei to string, returns empty string on error.
 func (i Ei) StringZ() string {
 	r, _ := i.String()
@@ -434,6 +338,30 @@ func (i Ei) Bytes() ([]byte, error) {
 	return nil, NewEiErr("type conversion error")
 }
 
+// Float32Z converts Ei to float32, returns zero value on error.
+func (i Ei) Float32Z() float32 {
+	r, _ := i.Float32()
+	return r
+}
+
+// Float32 converts Ei to float32.
+func (i Ei) Float32() (float32, error) {
+	r, e := i.Float64()
+	return float32(r), e
+}
+
+// BoolZ converts Ei to bool, returns false on error.
+func (i Ei) BoolZ() bool {
+	r, _ := i.Bool()
+	return r
+}
+
+// Bool converts Ei to bool.
+func (i Ei) Bool() (bool, error) {
+	r, e := i.Uint64()
+	return r != 0, e
+}
+
 // IntZ converts Ei to int, returns zero value on error.
 func (i Ei) IntZ() int {
 	r, _ := i.Int()
@@ -442,46 +370,8 @@ func (i Ei) IntZ() int {
 
 // Int converts Ei to int.
 func (i Ei) Int() (int, error) {
-	switch v := i.v.(type) {
-	case error:
-		return 0, v
-	case uint8:
-		return int(v), nil
-	case uint16:
-		return int(v), nil
-	case uint:
-		return int(v), nil
-	case uint32:
-		return int(v), nil
-	case uint64:
-		return int(v), nil
-	case int8:
-		return int(v), nil
-	case int16:
-		return int(v), nil
-	case int:
-		return int(v), nil
-	case int32:
-		return int(v), nil
-	case int64:
-		return int(v), nil
-	case float32:
-		return int(v), nil
-	case float64:
-		return int(v), nil
-	case bool:
-		if v {
-			return 1, nil
-		}
-		return 0, nil
-	case string:
-		if n, err := strconv.ParseInt(v, 0, 64); err == nil {
-			return int(n), nil
-		}
-	case time.Time:
-		return int(v.Unix()), nil
-	}
-	return 0, NewEiErr("type conversion error")
+	r, e := i.Int64()
+	return int(r), e
 }
 
 // Int32Z converts Ei to int32, returns zero value on error.
@@ -492,46 +382,8 @@ func (i Ei) Int32Z() int32 {
 
 // Int32 converts Ei to int32.
 func (i Ei) Int32() (int32, error) {
-	switch v := i.v.(type) {
-	case error:
-		return 0, v
-	case uint8:
-		return int32(v), nil
-	case uint16:
-		return int32(v), nil
-	case uint:
-		return int32(v), nil
-	case uint32:
-		return int32(v), nil
-	case uint64:
-		return int32(v), nil
-	case int8:
-		return int32(v), nil
-	case int16:
-		return int32(v), nil
-	case int:
-		return int32(v), nil
-	case int32:
-		return int32(v), nil
-	case int64:
-		return int32(v), nil
-	case float32:
-		return int32(v), nil
-	case float64:
-		return int32(v), nil
-	case bool:
-		if v {
-			return 1, nil
-		}
-		return 0, nil
-	case string:
-		if n, err := strconv.ParseInt(v, 0, 64); err == nil {
-			return int32(n), nil
-		}
-	case time.Time:
-		return int32(v.Unix()), nil
-	}
-	return 0, NewEiErr("type conversion error")
+	r, e := i.Int64()
+	return int32(r), e
 }
 
 // Int16Z converts Ei to int16, returns zero value on error.
@@ -542,44 +394,8 @@ func (i Ei) Int16Z() int16 {
 
 // Int16 converts Ei to int16.
 func (i Ei) Int16() (int16, error) {
-	switch v := i.v.(type) {
-	case error:
-		return 0, v
-	case uint8:
-		return int16(v), nil
-	case uint16:
-		return int16(v), nil
-	case uint:
-		return int16(v), nil
-	case uint32:
-		return int16(v), nil
-	case uint64:
-		return int16(v), nil
-	case int8:
-		return int16(v), nil
-	case int16:
-		return int16(v), nil
-	case int:
-		return int16(v), nil
-	case int32:
-		return int16(v), nil
-	case int64:
-		return int16(v), nil
-	case float32:
-		return int16(v), nil
-	case float64:
-		return int16(v), nil
-	case bool:
-		if v {
-			return 1, nil
-		}
-		return 0, nil
-	case string:
-		if n, err := strconv.ParseInt(v, 0, 64); err == nil {
-			return int16(n), nil
-		}
-	}
-	return 0, NewEiErr("type conversion error")
+	r, e := i.Int64()
+	return int16(r), e
 }
 
 // Int8Z converts Ei to int8, returns zero value on error.
@@ -590,44 +406,8 @@ func (i Ei) Int8Z() int8 {
 
 // Int8 converts Ei to int8.
 func (i Ei) Int8() (int8, error) {
-	switch v := i.v.(type) {
-	case error:
-		return 0, v
-	case uint8:
-		return int8(v), nil
-	case uint16:
-		return int8(v), nil
-	case uint:
-		return int8(v), nil
-	case uint32:
-		return int8(v), nil
-	case uint64:
-		return int8(v), nil
-	case int8:
-		return int8(v), nil
-	case int16:
-		return int8(v), nil
-	case int:
-		return int8(v), nil
-	case int32:
-		return int8(v), nil
-	case int64:
-		return int8(v), nil
-	case float32:
-		return int8(v), nil
-	case float64:
-		return int8(v), nil
-	case bool:
-		if v {
-			return 1, nil
-		}
-		return 0, nil
-	case string:
-		if n, err := strconv.ParseInt(v, 0, 64); err == nil {
-			return int8(n), nil
-		}
-	}
-	return 0, NewEiErr("type conversion error")
+	r, e := i.Int64()
+	return int8(r), e
 }
 
 // UintZ converts Ei to uint, returns zero value on error.
@@ -638,46 +418,8 @@ func (i Ei) UintZ() uint {
 
 // Uint converts Ei to uint.
 func (i Ei) Uint() (uint, error) {
-	switch v := i.v.(type) {
-	case error:
-		return 0, v
-	case uint8:
-		return uint(v), nil
-	case uint16:
-		return uint(v), nil
-	case uint:
-		return uint(v), nil
-	case uint32:
-		return uint(v), nil
-	case uint64:
-		return uint(v), nil
-	case int8:
-		return uint(v), nil
-	case int16:
-		return uint(v), nil
-	case int:
-		return uint(v), nil
-	case int32:
-		return uint(v), nil
-	case int64:
-		return uint(v), nil
-	case float32:
-		return uint(v), nil
-	case float64:
-		return uint(v), nil
-	case bool:
-		if v {
-			return 1, nil
-		}
-		return 0, nil
-	case string:
-		if n, err := strconv.ParseInt(v, 0, 64); err == nil {
-			return uint(n), nil
-		}
-	case time.Time:
-		return uint(v.Unix()), nil
-	}
-	return 0, NewEiErr("type conversion error")
+	r, e := i.Uint64()
+	return uint(r), e
 }
 
 // Uint32Z converts Ei to uint32, returns zero value on error.
@@ -688,46 +430,8 @@ func (i Ei) Uint32Z() uint32 {
 
 // Uint32 converts Ei to uint32.
 func (i Ei) Uint32() (uint32, error) {
-	switch v := i.v.(type) {
-	case error:
-		return 0, v
-	case uint8:
-		return uint32(v), nil
-	case uint16:
-		return uint32(v), nil
-	case uint:
-		return uint32(v), nil
-	case uint32:
-		return uint32(v), nil
-	case uint64:
-		return uint32(v), nil
-	case int8:
-		return uint32(v), nil
-	case int16:
-		return uint32(v), nil
-	case int:
-		return uint32(v), nil
-	case int32:
-		return uint32(v), nil
-	case int64:
-		return uint32(v), nil
-	case float32:
-		return uint32(v), nil
-	case float64:
-		return uint32(v), nil
-	case bool:
-		if v {
-			return 1, nil
-		}
-		return 0, nil
-	case string:
-		if n, err := strconv.ParseInt(v, 0, 64); err == nil {
-			return uint32(n), nil
-		}
-	case time.Time:
-		return uint32(v.Unix()), nil
-	}
-	return 0, NewEiErr("type conversion error")
+	r, e := i.Uint64()
+	return uint32(r), e
 }
 
 // Uint16Z converts Ei to uint16, returns zero value on error.
@@ -738,44 +442,8 @@ func (i Ei) Uint16Z() uint16 {
 
 // Uint16 converts Ei to uint16.
 func (i Ei) Uint16() (uint16, error) {
-	switch v := i.v.(type) {
-	case error:
-		return 0, v
-	case uint8:
-		return uint16(v), nil
-	case uint16:
-		return uint16(v), nil
-	case uint:
-		return uint16(v), nil
-	case uint32:
-		return uint16(v), nil
-	case uint64:
-		return uint16(v), nil
-	case int8:
-		return uint16(v), nil
-	case int16:
-		return uint16(v), nil
-	case int:
-		return uint16(v), nil
-	case int32:
-		return uint16(v), nil
-	case int64:
-		return uint16(v), nil
-	case float32:
-		return uint16(v), nil
-	case float64:
-		return uint16(v), nil
-	case bool:
-		if v {
-			return 1, nil
-		}
-		return 0, nil
-	case string:
-		if n, err := strconv.ParseInt(v, 0, 64); err == nil {
-			return uint16(n), nil
-		}
-	}
-	return 0, NewEiErr("type conversion error")
+	r, e := i.Uint64()
+	return uint16(r), e
 }
 
 // Uint8Z converts Ei to uint8, returns zero value on error.
@@ -786,44 +454,8 @@ func (i Ei) Uint8Z() uint8 {
 
 // Uint8 converts Ei to uint8.
 func (i Ei) Uint8() (uint8, error) {
-	switch v := i.v.(type) {
-	case error:
-		return 0, v
-	case uint8:
-		return uint8(v), nil
-	case uint16:
-		return uint8(v), nil
-	case uint:
-		return uint8(v), nil
-	case uint32:
-		return uint8(v), nil
-	case uint64:
-		return uint8(v), nil
-	case int8:
-		return uint8(v), nil
-	case int16:
-		return uint8(v), nil
-	case int:
-		return uint8(v), nil
-	case int32:
-		return uint8(v), nil
-	case int64:
-		return uint8(v), nil
-	case float32:
-		return uint8(v), nil
-	case float64:
-		return uint8(v), nil
-	case bool:
-		if v {
-			return 1, nil
-		}
-		return 0, nil
-	case string:
-		if n, err := strconv.ParseInt(v, 0, 64); err == nil {
-			return uint8(n), nil
-		}
-	}
-	return 0, NewEiErr("type conversion error")
+	r, e := i.Uint64()
+	return uint8(r), e
 }
 
 // ByteZ converts Ei to byte, returns zero value on error.
