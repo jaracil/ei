@@ -27,7 +27,17 @@ package main
 
 import(
 	"github.com/jaracil/ei"
+	"strings"
 )
+
+// Middleware function, see examples below
+func uppercase(i ei.Ei, p ...interface{}) ei.Ei { 
+	s, err := i.String()
+	if err != nil {
+		return ei.N(err)
+	}
+	return  ei.N(strings.ToUpper(s))
+}
 
 func main(){
 	var i interface{}
@@ -65,6 +75,9 @@ func main(){
 	v, err := ei.N(i).M("brown").S(1).Int() // Key error on M("brown") is propagated up to Int()
 	println(v, err.Error()) // 0 key not found
 
+	// Middleware transformation
+	i = "hello"
+	println(ei.N(i).F(uppercase).StringZ()) // HELLO
 }
 
 ```
