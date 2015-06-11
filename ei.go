@@ -52,6 +52,11 @@ func N(i interface{}) Ei {
 	return Ei{v: i}
 }
 
+// F inserts a transformation function to Ei evaluation chain.
+func (i Ei) F(f func(Ei, ...interface{}) Ei, p ...interface{}) Ei {
+	return f(i, p...)
+}
+
 // RawZ returns the content of Ei as interface{} or nil if Ei points
 // to EiErr
 func (i Ei) RawZ() interface{} {
