@@ -495,7 +495,7 @@ func (i Ei) SliceZ() []interface{} {
 	return r
 }
 
-// Map converts Ei to map[string]interface{}
+// MapStr converts Ei to map[string]interface{}
 func (i Ei) MapStr() (map[string]interface{}, error) {
 	switch v := i.v.(type) {
 	case error:
@@ -510,7 +510,7 @@ func (i Ei) MapStr() (map[string]interface{}, error) {
 	}
 }
 
-// SliceZ converts Ei to map[string]interface{}, returns zero value on error.
+// MapStrZ converts Ei to map[string]interface{}, returns zero value on error.
 func (i Ei) MapStrZ() map[string]interface{} {
 	r, _ := i.MapStr()
 	return r
