@@ -474,6 +474,48 @@ func (i Ei) Byte() (byte, error) {
 	return i.Uint8()
 }
 
+// Slice converts Ei to []interface{}
+func (i Ei) Slice() ([]interface{}, error) {
+	switch v := i.v.(type) {
+	case error:
+		return nil, v
+	case []interface{}:
+		return v, nil
+	case S:
+		return ([]interface{})(v), nil
+	default:
+		return nil, NewEiErr("type conversion error")
+
+	}
+}
+
+// SliceZ converts Ei to []interface{}, returns zero value on error.
+func (i Ei) SliceZ() []interface{} {
+	r, _ := i.Slice()
+	return r
+}
+
+// Map converts Ei to map[string]interface{}
+func (i Ei) MapStr() (map[string]interface{}, error) {
+	switch v := i.v.(type) {
+	case error:
+		return nil, v
+	case map[string]interface{}:
+		return v, nil
+	case M:
+		return (map[string]interface{})(v), nil
+	default:
+		return nil, NewEiErr("type conversion error")
+
+	}
+}
+
+// SliceZ converts Ei to []interface{}, returns zero value on error.
+func (i Ei) MapStrZ() map[string]interface{} {
+	r, _ := i.MapStr()
+	return r
+}
+
 // Len returns the length of map[string]interface{} or []interface{}
 // stored in Ei.
 func (i Ei) Len() (int, error) {
