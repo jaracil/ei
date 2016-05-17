@@ -510,7 +510,7 @@ func (i Ei) MapStr() (map[string]interface{}, error) {
 	}
 }
 
-// SliceZ converts Ei to []interface{}, returns zero value on error.
+// SliceZ converts Ei to map[string]interface{}, returns zero value on error.
 func (i Ei) MapStrZ() map[string]interface{} {
 	r, _ := i.MapStr()
 	return r
