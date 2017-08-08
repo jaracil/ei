@@ -5,10 +5,10 @@ import (
 	"time"
 )
 
-// convenience shorthand for []interface{} type.
+// S is a convenience shorthand for []interface{} type.
 type S []interface{}
 
-// convenience shorthand for map[string]interface{} type.
+// M is a convenience shorthand for map[string]interface{} type.
 type M map[string]interface{}
 
 // EiErr specific Ei conversion error
@@ -549,4 +549,10 @@ func (i Ei) HasKey(k string) (bool, error) {
 	default:
 		return false, NewEiErr("type don't support HasKey()")
 	}
+}
+
+// HasKeyZ returns true if map[string]interface{} stored in Ei has the key k.
+func (i Ei) HasKeyZ(k string) bool {
+	r, _ := i.HasKey(k)
+	return r
 }
